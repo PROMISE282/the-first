@@ -1,0 +1,65 @@
+extends CharacterBody3D
+
+#이동관련
+const move_speed=5
+const jump_height=4.5
+const mouse_sensitive=0.003
+
+@onready var neck :=	 $Neck
+@onready var camera :=	 $Neck/Camera3D
+@onready var interact_ray =$Neck/Camera3D/RayCast3D
+@onready var anim_player = $Neck/Camera3D/hand/AnimationPlayer
+var max_health: int = 100
+var current_health: int = max_health
+signal health_changed(new_health)
+#중력
+var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+func _ready(): #실행 시
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED) #마우스 중앙 고정
+func _unhandled_input(event): #마우스가 움직일 때 마다
+	if event is InputEventMouseMotion:
+		rotate_y(-event.relative.x * mouse_sensitive) #좌우 회전
+		neck.rotation.x -= event.relative.y * mouse_sensitive #상하 회전(neck만 움직여서 몸체가 회전하는걸 방지)
+		neck.rotation.x= clamp(neck.rotation.x, deg_to_rad(-90), deg_to_rad(90)) #상하 회전 각도를 -90도~90도까지로 고정
+func _physics_process(delta):
+	if not is_on_floor(): #중력작용
+		velocity.y -= gravity * delta
+	if Input.is_action_just_pressed("ui_accept") and is_on_floor(): #점프
+		velocity.y=jump_height
+	var input_dir=Input.get_vector("ui_left","ui_right","ui_down","ui_up")
+	var direction=(transform.basis * Vector3(input_dir.x, 0, -input_dir.y)).normalized()
+	if direction:
+		velocity.x=direction.x * move_speed
+		velocity.z=direction.z * move_speed
+	else:
+		velocity.x=move_toward(velocity.x, 0, move_speed)
+		velocity.z=move_toward(velocity.z, 0, move_speed)
+	if Input.is_action_just_pressed("fire"):
+		shoot()
+	move_and_slide()
+func shoot():
+	if interact_ray.is_colliding():
+		@warning_ignore("confusable_local_declaration")
+		var hit_obj=interact_ray.get_collider()
+		if hit_obj.has_method("take_damage"):
+			hit_obj.take_damage(20)
+	var hit_obj = interact_ray.get_collider()
+	if hit_obj.has_method("take_damage"):
+		@warning_ignore("standalone_expression")
+		hit_obj.take_damage
+	if anim_player.has_animation("shoot"):
+		anim_player.stop()
+		anim_player.play("shoot")
+		print("taken_damage: ", hit_obj.name)
+	move_and_slide()
+func take_damage(amount: int):
+	current_health -= amount
+	health_changed.emit(current_health)
+	print('player health: ', current_health)
+	if current_health <= 0:
+		die()
+func die():
+	get_tree().reload_current_scene()
+	
+	
+
