@@ -4,11 +4,12 @@
 [ext_resource type="Script" uid="uid://xmd4ybc0ll02" path="res://enemy.gd" id="2_mb675"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_mb675"]
-vertices = PackedVector3Array(-9.5, 1, -4.5, -9.5, 1, 4.5, 9.5, 1, 4.5, 9.5, 1, -4.5)
+vertices = PackedVector3Array(-9.5, 0.52, -9.5, -9.5, 0.52, 9.5, 9.5, 0.52, 9.5, 9.5, 0.52, -9.5)
 polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+cell_height = 0.01
 
 [sub_resource type="BoxMesh" id="BoxMesh_ondcp"]
-size = Vector3(20, 1, 10)
+size = Vector3(20, 1, 20)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_qt165"]
 
@@ -23,28 +24,35 @@ sky_material = SubResource("PhysicalSkyMaterial_dih8d")
 background_mode = 2
 sky = SubResource("Sky_14g7c")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mb675"]
+bg_color = Color(1, 0, 0, 1)
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dih8d"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_14g7c"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mb675"]
+albedo_color = Color(0.61229926, 1.504086e-06, 5.7756904e-07, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_dih8d"]
+material = SubResource("StandardMaterial3D_mb675")
 
 [node name="Node3D" type="Node3D" unique_id=1554718425]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1474608369]
 navigation_mesh = SubResource("NavigationMesh_mb675")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D" unique_id=117472607]
-mesh = SubResource("BoxMesh_ondcp")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/MeshInstance3D" unique_id=1949435646]
-physics_material_override = SubResource("PhysicsMaterial_qt165")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/MeshInstance3D/StaticBody3D" unique_id=856328966]
-shape = SubResource("BoxShape3D_mb675")
-disabled = true
-
 [node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D" unique_id=1213627682]
 use_collision = true
-size = Vector3(10, 1, 10)
+size = Vector3(20, 1, 20)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/CSGBox3D" unique_id=117472607]
+mesh = SubResource("BoxMesh_ondcp")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/CSGBox3D/MeshInstance3D" unique_id=1949435646]
+physics_material_override = SubResource("PhysicsMaterial_qt165")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/CSGBox3D/MeshInstance3D/StaticBody3D" unique_id=856328966]
+shape = SubResource("BoxShape3D_mb675")
+disabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1475943262]
 environment = SubResource("Environment_hngbu")
@@ -52,12 +60,9 @@ environment = SubResource("Environment_hngbu")
 [node name="player" parent="." unique_id=77762697 instance=ExtResource("1_mb675")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1369175493]
-transform = Transform3D(-0.8807833, -1.3124694e-08, -0.47351953, -0.36205614, 0.6444974, 0.6734527, 0.3051821, 0.76460654, -0.56766254, 0, 8.396785, -14.498965)
+[node name="CanvasLayer" type="CanvasLayer" parent="player" unique_id=1790735967]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1790735967]
-
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer" unique_id=1539041787]
+[node name="CenterContainer" type="CenterContainer" parent="player/CanvasLayer" unique_id=1539041787]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -70,18 +75,29 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/CenterContainer" unique_id=891392355]
+[node name="ColorRect" type="ColorRect" parent="player/CanvasLayer/CenterContainer" unique_id=891392355]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 color = Color(0.5411765, 0.16862746, 0.8862745, 1)
 
-[node name="health" type="ProgressBar" parent="CanvasLayer" unique_id=1297602138]
+[node name="health" type="ProgressBar" parent="player/CanvasLayer" unique_id=1297602138]
+visibility_layer = 7
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -27.0
-offset_right = 4.0
+offset_left = 20.0
+offset_top = -135.0
+offset_right = 40.0
 grow_vertical = 0
+theme_override_styles/fill = SubResource("StyleBoxFlat_mb675")
+value = 100.0
+
+[node name="ammolabel" type="Label" parent="player/CanvasLayer" unique_id=1632597752]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1369175493]
+transform = Transform3D(-0.8807833, -1.3124694e-08, -0.47351953, -0.36205614, 0.6444974, 0.6734527, 0.3051821, 0.76460654, -0.56766254, 0, 8.396785, -14.498965)
 
 [node name="enemy" type="CharacterBody3D" parent="." unique_id=965234628]
 transform = Transform3D(-0.9933507, 0, -0.11512792, 0, 1, 0, 0.11512792, 0, -0.9933507, -4.698, 2, 0)
@@ -91,6 +107,7 @@ script = ExtResource("2_mb675")
 shape = SubResource("CapsuleShape3D_dih8d")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="enemy" unique_id=2084099111]
-mesh = SubResource("CapsuleMesh_14g7c")
+mesh = SubResource("CapsuleMesh_dih8d")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="enemy" unique_id=1876104545]
+path_postprocessing = 2
