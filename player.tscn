@@ -1,0 +1,122 @@
+[gd_scene format=3 uid="uid://c7mxjf2vty0xx"]
+
+[ext_resource type="Script" uid="uid://70xdm4hbwc6v" path="res://character_body_3d.gd" id="1_4flbx"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_gc7fo"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_s21t4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4flbx"]
+albedo_color = Color(0.33660764, 0.3366076, 0.3366076, 1)
+metallic = 1.0
+roughness = 0.3
+
+[sub_resource type="BoxMesh" id="BoxMesh_mb675"]
+size = Vector3(0.2, 0.2, 1)
+
+[sub_resource type="Animation" id="Animation_dih8d"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("shape_gun:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.5, -0.4, -0.6)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("shape_gun:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_4flbx"]
+resource_name = "reload"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("shape_gun:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.5, -0.4, -0.6), Vector3(0.5, -0.59108114, -0.6), Vector3(0.5, -0.4, -0.6)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("shape_gun:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.2803522, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_14g7c"]
+resource_name = "shoot"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("shape_gun:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.5, -0.4, -0.6), Vector3(0.5, -0.3546046, -0.41304433), Vector3(0.5, -0.39999998, -0.6)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hngbu"]
+_data = {
+&"RESET": SubResource("Animation_dih8d"),
+&"reload": SubResource("Animation_4flbx"),
+&"shoot": SubResource("Animation_14g7c")
+}
+
+[node name="player" type="CharacterBody3D" unique_id=77762697 groups=["player"]]
+script = ExtResource("1_4flbx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=904352340]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.49175334, 0)
+mesh = SubResource("CapsuleMesh_gc7fo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1961539113]
+shape = SubResource("CapsuleShape3D_s21t4")
+
+[node name="Neck" type="Node3D" parent="." unique_id=1356435948]
+
+[node name="Camera3D" type="Camera3D" parent="Neck" unique_id=1645143701]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5317762)
+current = true
+
+[node name="RayCast3D" type="RayCast3D" parent="Neck/Camera3D" unique_id=119668752]
+target_position = Vector3(0, 0, -50)
+
+[node name="hand" type="Node3D" parent="Neck/Camera3D" unique_id=1944680919]
+
+[node name="shape_gun" type="MeshInstance3D" parent="Neck/Camera3D/hand" unique_id=1490705781]
+transform = Transform3D(1, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, 0.5, -0.4, -0.6)
+material_override = SubResource("StandardMaterial3D_4flbx")
+mesh = SubResource("BoxMesh_mb675")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Neck/Camera3D/hand" unique_id=862186802]
+libraries/ = SubResource("AnimationLibrary_hngbu")

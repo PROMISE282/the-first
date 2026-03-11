@@ -1,0 +1,35 @@
+extends CharacterBody3D
+
+@export var movement_speed: float=3.0
+@onready var nav_agent := $NavigationAgent3D
+
+var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var player: Node3D = null
+var health: int = 100
+func _ready():
+	player = get_tree().get_first_node_in_group("player")
+func _physics_process(delta):
+	if player:
+		nav_agent.target_position = player.global_position
+		var next_path_pos = nav_agent.get_next_path_position()
+		var new_velocity = (next_path_pos - global_position).normalized() * movement_speed
+		velocity = new_velocity
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+	if player:
+		nav_agent.target_position = player.global_position
+		var next_path_pos = nav_agent.get_next_path_position()
+		var direction = (next_path_pos - global_position).normalized()
+		velocity.x = direction.x * movement_speed
+		velocity.z = direction.z * movement_speed
+	move_and_slide()
+func take_damage(amount: int):
+	health -= amount
+	print('health now: ', health)
+	if health <= 0:
+		die()
+func die():
+	$CollisionShape3D.disabled = true
+	set_physics_process(false)
+	print("died")
+	queue_free()
