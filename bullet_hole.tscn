@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bth54y5puivjp"]
+
+[ext_resource type="Texture2D" uid="uid://dv03q6r2whkow" path="res://black circle.png" id="1_guucc"]
+
+[node name="Bullet_hole" type="Node3D" unique_id=1292878880]
+
+[node name="Decal" type="Decal" parent="." unique_id=161144335]
+size = Vector3(0.1, 0.1, 0.1)
+texture_albedo = ExtResource("1_guucc")

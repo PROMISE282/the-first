@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://cklvfu1ryxcx0"]
+
+[ext_resource type="Script" uid="uid://vkisfx0isoki" path="res://bullettracer.gd" id="1_gidfl"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_udjwn"]
+
+[node name="Bullettracer" type="Node3D" unique_id=172162962]
+script = ExtResource("1_gidfl")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2140605415]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, -0.5)
+mesh = SubResource("CylinderMesh_udjwn")
+script = ExtResource("1_gidfl")
