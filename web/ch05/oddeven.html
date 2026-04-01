@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홀과 짝</title>
+</head>
+<body>
+    <h2>홀짝 구분</h2>
+    <input 
+        id='input_number' 
+        type='number' 
+        placeholder="정수입력"
+    />
+    <button id="btn" type="button">완료</button>
+    <div id="result">결과</div>
+</body>
+</html>
+<script>
+    document.getElementById('btn').onclick=function(){
+        const num=document.getElementById('input_number').value;
+        let result=null;
+        if(num%2==0){
+            result='짝수';
+        } else {
+            result='홀수';
+        };
+        document.getElementById('result').textContent=result;
+    };
+</script>

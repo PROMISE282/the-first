@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>score switch</title>
+</head>
+<body>
+    <input id="input_score" type="number" placeholder="너는 점수다.">
+    <button id="complete" type="button">확인</button>
+    <div id="score">여기에서 결과나옴</div>
+</body>
+</html>
+<script>
+    document.getElementById('complete').onclick=function(){
+        const n=document.getElementById('input_score').value;
+        let score='';
+        if(n>100 || n<0){
+            score='잘못된 점수입니다.'
+        } else {
+            switch(Math.trunc(n/10)){
+                case 9:
+                case 10:
+                    score='A';
+                    break;
+                case 8:
+                    score='B';
+                    break;
+                case 7:
+                    score='C';
+                    break;
+                case 6:
+                    score='D';
+                    break;
+                default:
+                    score='F';
+                    break;
+            }
+        }
+        document.getElementById('score').textContent=score;
+    }
+</script>
