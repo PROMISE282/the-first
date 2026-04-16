@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>open api weather</title>
+</head>
+<body>
+    <select id="city">
+        <option value="Seoul">seoul</option>
+        <option value="Busan">busan</option>
+        <option value="Daegu">daegu</option>
+        <option value="Incheon">incheon</option>
+        <option value="Daejeon">daejeon</option>
+
+    </select>
+    <button id='btn' onclick="getWeather()">조회</button>
+
+    <h2 id="city-name"></h2>
+    <h2 id="temp"></h2>
+    <h2 id="humidity"></h2>
+
+    <style>
+        *{
+            background-color: lightslategray;
+        }
+        #btn{
+            color: lightgreen;
+            background-color: gray;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+        #btn:hover{
+            background-color: darkgray;
+        }
+        #city{
+            margin-left: 10px;
+            cursor: pointer;
+            background-color: white;
+            border-radius: 3px;
+        }
+        #temp{
+            color: darkred;
+            margin-left: 10px;
+        }
+        #humidity{
+            color: lightblue;
+            margin-left: 10px;
+        }
+        #city-name{
+            margin-left: 10px;
+        }
+    </style>
+            
+    <script>
+        const cities = {
+            "Seoul": { lat: 37.5665, lon: 126.9780, name: "서울" },
+            "Busan": { lat: 35.1796, lon: 129.0756, name: "부산" },
+            "Daegu": { lat: 35.8714, lon: 128.6014, name: "대구" },
+            "Incheon": { lat: 37.4563, lon: 126.7052, name: "인천" },
+            "Daejeon": { lat: 36.3504, lon: 127.3845, name: "대전" },
+        };
+
+        function getWeather(){
+            const input=document.getElementById("city").value;
+            const city=cities[input];
+
+            const url = `https://api.open-meteo.com/v1/forecast`
+            + `?latitude=${city.lat}&longitude=${city.lon}`
+            + `&current=temperature_2m,relative_humidity_2m`;
+
+            fetch(url)
+                .then(res => res.json())
+                .then(data =>{
+                    document.getElementById("city-name").innerText = city.name
+                    document.getElementById("temp").innerText = data.current.temperature_2m + "도"
+                    document.getElementById("humidity").innerText = data.current.relative_humidity_2m + "%"
+                })
+        }
+
+        getWeather()
+    </script>
+</body>
+</html>
