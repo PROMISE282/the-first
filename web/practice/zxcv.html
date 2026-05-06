@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>coffee cafe</title>
+        <!-- CDN 사용해 폰트 파일을 로드하기 -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            * {
+                /* 폰트 설정하기 */
+                font-family: "Nanum Pen Script", "Noto Sans", sans-serif;
+                /* 요소의 너비/높이를 계산할 때 순수 콘텐트 박스 영역만 계산할지(content-box), 
+                테두리와 안쪽 여백도 포함해 계산할지(border-box) 설정하는 css 속성
+                별도 설정하지 않을 경우 기본값은 content-box */
+                box-sizing: border-box;
+            }
+            .main {
+                width : 500px;
+                height : 300px;
+                padding : 20px;
+                margin : 0 auto;
+                background-color: rgb(230, 230, 230);
+            }
+            #price {
+                width: 100%;
+                border: 1px solid rgb(100, 150, 250);
+                border-radius: 5px;
+                outline: none;
+                padding: 5px 10px;
+                margin-bottom   : 1rem;
+                /* rem은 최상단에 정의된 폰트 크기를 기준으로 결정된다. */
+                /* 최상단 폰트 크기를 14px로 정의한 경우, 1rem = 14px이 된다. */
+            }
+            .btn_wrap {
+                float: right;
+            }
+            #btn_calc {
+                background-color:  rgb(100, 150, 255);
+                color: rgb(220, 220, 220);
+                border: none;
+                cursor: pointer;
+                padding: 12px 20px;
+                transition: all ease 0.3s;
+                border-radius: 10px;
+            }
+            #btn_calc:hover {
+                background-color: rgb(130, 180, 255);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main">
+            <h1>아메리카노 최대 수량 계산</h1>
+            <input type="text" id="price" value="5500" />
+            <div class="btn_wrap">
+                <button id="btn_calc">계산</button>
+            </div>
+            <div id="print">
+                아메리카노를 최대 몇 잔 마실 수 있고, 남은 거스름돈은
+                얼마일까요?
+            </div>
+        </div>
+    </body>
+</html>
+<script>
+    const onCalcBtnClick = function () {
+        let money = +document.getElementById("price").value;
+        const price = 5500;
+        let count = 0;
+        let change = 0;
+
+        count = Math.floor(money/price);
+        change = money%price;
+
+        document.getElementById("print").textContent =
+            `아메리카노를 ${count}잔 살 수 있다.. 거스름돈은 ${change}원이다`;
+    };
+    document.getElementById("btn_calc").onclick = onCalcBtnClick;
+</script>
