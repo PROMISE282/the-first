@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>todolist</title>
+    <link rel="stylesheet" href="./todolist.css">
+</head>
+<body>
+    <div class="wrap">
+        <h1>Todolist</h1>
+        <p>할 일을 관리하는 목록일 가능성이 100%에 수렴합니다.</p>
+        <img src="./ine2.png" alt="todolist">
+        <div class="todowrap">
+            <h2>할 일 목록</h2>
+            <ol id="todo_list">
+            </ol>
+        </div>
+        <div class="todowrap">
+            <h2>할 일 등록</h2>
+            <input type="text" id="input_todo" placeholder="추가 할 항목을 입력하세요.">
+            <button id="btn_add">등록하기</button>
+        </div>
+        <div class="todocheckwrap">
+            <h2>완료하기</h2>
+            <p>
+                완료 처리 할 아이템의 순번을 입력하고 버튼을 누르면 완료 처리됩니다.
+            </p>
+            <input type="number" id="input_todo_num" placeholder="삭제할 항목의 번호를 입력하세요.">
+            <button id="btn_check">완료</button>
+        </div>
+    </div>
+    <script src="./todolist.js"></script>
+</body>
+</html>
