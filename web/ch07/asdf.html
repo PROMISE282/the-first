@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .todo_wrap ul {
+            margin: 0;
+            padding: 0;
+
+        }
+
+        .todo_wrap li{
+            width: 200px;
+            list-style: none;
+            padding: 20px 10px;
+            background-color: pink;
+            color: white;
+            margin-bottom: 10px;
+            margin-left: 10 px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all ease-in 0.5s;
+        }
+
+        .todo_wrap li:hover {
+            background-color: blueviolet;
+            scale: 1.1;
+        }
+    </style>
+</head>
+<body>
+    <div class="title_wrap">
+        <span id="title">Todo list</span>
+    </div>
+    <div class="todo_wrap">
+        <ul id="todo_list">
+            <li>기상</li>
+            <li>취침</li>
+            <li>밥</li>
+            <li>코딩</li>
+        </ul>
+    </div>
+    <input id="input_todo_title" type="text">
+    <button id="btn_add_todo_item">add</button>
+</body>
+<script>
+    document.getElementById("btn_add_todo_item").onclick = function(){
+        const title=document.getElementById("input_todo_title").value;
+        const item=`<li>${title}</li>`;
+        let list=document.getElementById("todo_list");
+        list.innerHTML += item
+    };
+</script>
+</html>
